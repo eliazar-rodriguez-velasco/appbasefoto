@@ -16,8 +16,8 @@ class DetailPage extends StatelessWidget {
   var bdHelper;
 
   String name;
-  String Apaterno;
-  String Amaterno;
+  String paterno;
+  String materno;
   String email;
   String phone;
   String matricula;
@@ -32,11 +32,11 @@ class DetailPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(student.name.toString().toUpperCase() +
               " " +
-              student.Apaterno.toString().toUpperCase() +
+              student.paterno.toString().toUpperCase() +
               " " +
-              student.Amaterno.toString().toUpperCase()),
+              student.materno.toString().toUpperCase()),
           centerTitle: true,
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: Colors.black,
         ),
         body: Stack(
           children: <Widget>[
@@ -78,7 +78,7 @@ class DetailPage extends StatelessWidget {
                               student.name.toString().toUpperCase(),
                               style: TextStyle(
                                   fontSize: 40.0,
-                                  color: Colors.yellowAccent,
+                                  color: Colors.cyan,
                                   fontWeight: FontWeight.bold,
                                   fontStyle: FontStyle.italic),
                             ),
@@ -89,19 +89,19 @@ class DetailPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Text(
-                              student.Apaterno.toString().toUpperCase() +
+                              student.paterno.toString().toUpperCase() +
                                   " " +
-                                  student.Amaterno.toString().toUpperCase(),
+                                  student.materno.toString().toUpperCase(),
                               style: TextStyle(
                                 fontSize: 18.0,
-                                color: Colors.yellowAccent,
+                                color: Colors.cyan,
                                 // fontWeight: FontWeight.bold
                               ),
                             ),
                           ],
                         ),
                         Divider(
-                            color: Colors.deepPurple,
+                            color: Colors.black,
                             indent: 40,
                             endIndent: 40,
                             thickness: 4.0),
@@ -122,11 +122,11 @@ class DetailPage extends StatelessWidget {
                               style: TextStyle(color: Colors.white, fontSize: 15.0),
                             ),
                             icon: Icon(
-                              Icons.content_paste,
+                              Icons.card_membership,
                               color: Colors.white,
                               size: 30.0,
                             ),
-                            color: Colors.deepPurple,
+                            color: Colors.cyan,
                           ),
                         ),
                         //EMAIL
@@ -151,7 +151,7 @@ class DetailPage extends StatelessWidget {
                               color: Colors.white,
                               size: 30.0,
                             ),
-                            color: Colors.deepPurple,
+                            color: Colors.cyan,
                           ),
                         ),
                         new Padding(
@@ -175,7 +175,7 @@ class DetailPage extends StatelessWidget {
                                 color: Colors.white,
                                 size: 30.0,
                               ),
-                              color: Colors.deepPurple,
+                              color: Colors.cyan,
                             )),
                       ],
                     ),

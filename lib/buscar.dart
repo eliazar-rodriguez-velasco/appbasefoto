@@ -50,99 +50,18 @@ class _myHomePageState extends State<busqueda> {
     searchController.text = "";
   }
 
-  Widget menu() {
-    return Drawer(
-      child: ListView(
-        children: <Widget>[
-          DrawerHeader(
-            padding: EdgeInsets.all(50.0),
-            child: Text(
-              "MENU",
-              style: TextStyle(color: Colors.white, fontSize: 55),
-              textAlign: TextAlign.center,
-            ),
-            decoration: BoxDecoration(color: Colors.deepPurple),
-          ),
-          ListTile(
-            leading: Icon(Icons.content_paste, size: 28.0, color: Colors.deepPurpleAccent),
-            title: Text('BUSCAR', style: TextStyle(fontSize: 20.0, color: Colors.deepPurple)),
-            onTap: () {
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => busqueda()));
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.update,
-              color: Colors.yellowAccent,
-              size: 28.0,
-            ),
-            title: Text(
-              'UPDATE',
-              style: TextStyle(fontSize: 20.0, color: Colors.yellowAccent),
-            ),
-            onTap: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => actualizar()));
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.add,
-              color: Colors.greenAccent,
-              size: 28.0,
-            ),
-            title: Text('INSERT',
-                style: TextStyle(fontSize: 20.0, color: Colors.greenAccent)),
-            onTap: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => insertar()));
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.delete_forever,
-              color: Colors.red[800],
-              size: 28.0,
-            ),
-            title: Text('ELIMINAR',
-                style: TextStyle(fontSize: 20.0, color: Colors.red[800])),
-            onTap: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => borrar()));
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.location_searching,
-              color: Colors.blue[800],
-              size: 28.0,
-            ),
-            title: Text('SELECT',
-                style: TextStyle(fontSize: 20.0, color: Colors.blue[800])),
-            onTap: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => seleccionar()));
-            },
-          ),
-
-        ],
-      ),
-    );
-  }
 
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
-      drawer: menu(),
       appBar: new AppBar(
         centerTitle: true,
         backgroundColor: Colors.black,
         title: _isSearching
             ? TextField(
-          decoration: InputDecoration(hintText: "Buscando..."),
+          decoration: InputDecoration(hintText: "espere porfavor"),
           onChanged: (value) {
             setState(() {
               searchString = value;
@@ -210,7 +129,7 @@ class _myHomePageState extends State<busqueda> {
                         style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
-                            color: Colors.grey
+                            color: Colors.black
                         ),
                       ),
                       subtitle: new Text(
@@ -223,7 +142,7 @@ class _myHomePageState extends State<busqueda> {
                             .toUpperCase(),
                         style: TextStyle(
                             fontSize: 15.0,
-                            color: Colors.red
+                            color: Colors.cyan
                         ),
                       ),
                       onTap: () {

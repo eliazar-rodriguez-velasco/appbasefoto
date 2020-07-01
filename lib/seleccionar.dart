@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'borrar.dart';
+import 'buscar.dart';
 import 'insertar.dart';
 import 'actualizar.dart';
 import 'students.dart';
@@ -9,18 +10,18 @@ import 'main.dart';
 
 class seleccionar extends StatefulWidget {
   @override
-  _Select createState() => new _Select();
+  _Seleccionar createState() => new _Seleccionar();
 }
 
-class _Select extends State<seleccionar> {
+class _Seleccionar extends State<seleccionar> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
 //Variables referentes al manejo de la bd
   Future<List<Student>> Studentss;
   TextEditingController controllerValor = TextEditingController();
   String name;
-  String Apaterno;
-  String Amaterno;
+  String paterno;
+  String materno;
   String email;
   String phone;
   String matricula;
@@ -52,7 +53,7 @@ class _Select extends State<seleccionar> {
   void verificar() async {
     print(valor.toUpperCase());
     Student stu =
-        Student(null, name, Apaterno, Amaterno, phone, email, matricula,photo);
+        Student(null, name, paterno, materno, phone, email, matricula, photo);
     var col = await bdHelper.search(valor.toUpperCase());
     print(col);
     if (col.length < 1) {
@@ -86,7 +87,7 @@ class _Select extends State<seleccionar> {
                   style: TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blueGrey,
+                    color: Colors.brown,
                   ),
                 ),
               ),
@@ -95,42 +96,42 @@ class _Select extends State<seleccionar> {
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey)),
+                        color: Colors.brown)),
               ),
               DataColumn(
-                label: Text("Nombre",
+                label: Text("Name",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey)),
+                        color: Colors.brown)),
               ),
               DataColumn(
-                label: Text("Apellido Paterno",
+                label: Text("Paterno",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey)),
+                        color: Colors.brown)),
               ),
               DataColumn(
-                label: Text("Apellido Materno",
+                label: Text("Materno",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey)),
+                        color: Colors.brown)),
               ),
               DataColumn(
-                label: Text("E-mail",
+                label: Text("Email",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey)),
+                        color: Colors.brown)),
               ),
               DataColumn(
-                label: Text("numero de telefono",
+                label: Text("Phone",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey)),
+                        color: Colors.brown)),
               )
             ],
             rows: Studentss.map((student) => DataRow(cells: [
@@ -138,27 +139,27 @@ class _Select extends State<seleccionar> {
                       style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
-                          color: Colors.blueGrey))),
+                          color: Colors.brown))),
                   DataCell(Text(student.matricula.toString(),
                       style:
-                          TextStyle(fontSize: 16.0, color: Colors.brown))),
+                          TextStyle(fontSize: 16.0, color: Colors.cyan))),
                   DataCell(
                     Text(student.name.toString(),
                         style: TextStyle(
-                            fontSize: 16.0, color: Colors.brown)),
+                            fontSize: 16.0, color: Colors.cyan)),
                   ),
-                  DataCell(Text(student.Apaterno.toString(),
+                  DataCell(Text(student.paterno.toString(),
                       style:
-                          TextStyle(fontSize: 16.0, color: Colors.brown))),
-                  DataCell(Text(student.Amaterno.toString(),
+                          TextStyle(fontSize: 16.0, color: Colors.cyan))),
+                  DataCell(Text(student.materno.toString(),
                       style:
-                          TextStyle(fontSize: 16.0, color: Colors.brown))),
+                          TextStyle(fontSize: 16.0, color: Colors.cyan))),
                   DataCell(Text(student.phone.toString(),
                       style:
-                          TextStyle(fontSize: 16.0, color: Colors.brown))),
+                          TextStyle(fontSize: 16.0, color: Colors.cyan))),
                   DataCell(Text(student.email.toString(),
                       style:
-                          TextStyle(fontSize: 16.0, color: Colors.brown))),
+                          TextStyle(fontSize: 16.0, color: Colors.cyan))),
                 ])).toList(),
           ),
         ));
@@ -190,7 +191,7 @@ class _Select extends State<seleccionar> {
       key: _scaffoldKey,
       appBar: new AppBar(
         title: Text(
-          "BUSCAR",
+          "SELECT DATA SQFLite",
         ),
         centerTitle: true,
         backgroundColor: Colors.black,
@@ -215,12 +216,11 @@ class _Select extends State<seleccionar> {
                       controller: controllerValor,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                          labelText: 'Search',
+                          labelText: 'buscar',
                           contentPadding:
                               EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                           icon: Icon(
                             Icons.search,
-                            color: Colors.blueGrey,
                             size: 35.0,
                           ),
                           border: OutlineInputBorder(
@@ -238,7 +238,7 @@ class _Select extends State<seleccionar> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
                               side: BorderSide(
-                                  color: Colors.black, width: 2.0)),
+                                  color: Colors.tealAccent, width: 2.0)),
                           onPressed: () {
                             valor = controllerValor.text;
                             if (valor == "") {
@@ -252,7 +252,7 @@ class _Select extends State<seleccionar> {
                             }
                           },
                           child: Text(
-                            isUpdating ? 'ACTUALIZAR' : 'BUSCAR',
+                            isUpdating ? 'Update' : 'Search Data',
                             style: TextStyle(fontSize: 17.0),
                           ),
                         ),
@@ -260,7 +260,7 @@ class _Select extends State<seleccionar> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
                               side: BorderSide(
-                                  color: Colors.black, width: 2.0)),
+                                  color: Colors.tealAccent, width: 2.0)),
                           onPressed: () {
                             setState(() {
                               isUpdating = false;
@@ -280,7 +280,6 @@ class _Select extends State<seleccionar> {
               ),
             ),
           )),
-
     );
   }
 }

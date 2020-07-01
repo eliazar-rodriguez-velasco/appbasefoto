@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'actualizar.dart';
+import 'borrar.dart';
+import 'buscar.dart';
 import 'convertir.dart';
+import 'seleccionar.dart';
 import 'students.dart';
 import 'crud_operations.dart';
-
 
 class insertar extends StatefulWidget {
   @override
@@ -18,21 +21,20 @@ class _Insert extends State<insertar> {
 //Variables referentes al manejo de la bd
   Future<List<Student>> Studentss;
   TextEditingController controllerName = TextEditingController();
-  TextEditingController controllerAPaterno = TextEditingController();
-  TextEditingController controllerAMaterno = TextEditingController();
+  TextEditingController controllerPaterno = TextEditingController();
+  TextEditingController controllerMaterno = TextEditingController();
   TextEditingController controllerPhone = TextEditingController();
   TextEditingController controllerEmail = TextEditingController();
   TextEditingController controllerMatricula = TextEditingController();
   TextEditingController controllerPhoto = TextEditingController();
-  TextEditingController controllerImage = TextEditingController();
   String name;
-  String Apaterno;
-  String Amaterno;
+  String paterno;
+  String materno;
   String email;
   String phone;
+  String image;
   String matricula = null;
   String photo;
-  String image;
   int count;
   int currentUserId;
   var bdHelper;
@@ -48,19 +50,17 @@ class _Insert extends State<insertar> {
 
   void refreshList() {
     setState(() {
-      Studentss = bdHelper.Students(matricula);
+      Studentss = bdHelper.getStudents(matricula);
     });
   }
 
   void cleanData() {
     controllerName.text = "";
-    controllerAPaterno.text = "";
-    controllerAMaterno.text = "";
+    controllerPaterno.text = "";
+    controllerMaterno.text = "";
     controllerPhone.text = "";
     controllerEmail.text = "";
     controllerMatricula.text = "";
-    controllerPhoto.text = "";
-    controllerImage.text = "";
   }
 
   void showInSnackBar(String value) {
@@ -76,22 +76,22 @@ class _Insert extends State<insertar> {
     if (formkey.currentState.validate()) {
       formkey.currentState.save();
       if (isUpdating) {
-        Student stu = Student(
-            currentUserId, name, Apaterno, Amaterno, phone, email, matricula,photo);
+        Student stu = Student(currentUserId, name, paterno, materno, phone,
+            email, matricula, image);
         bdHelper.update(stu);
         setState(() {
           isUpdating = false;
         });
       } else {
-        Student stu =
-            Student(null, name, Apaterno, Amaterno, phone, email, matricula,photo);
-        var col = await bdHelper.Matricula(matricula);
+        Student stu = Student(
+            null, name, paterno, materno, phone, email, matricula, image);
+        var col = await bdHelper.getMatricula(matricula);
         print(col);
         if (col == 0) {
           bdHelper.insert(stu);
           showInSnackBar("Data saved");
         } else {
-          showInSnackBar(" NO PUEDE HABER DOS MATICULAS IGUALES");
+          showInSnackBar("Error! Ya existe esta matricula");
         }
       }
       cleanData();
@@ -99,7 +99,6 @@ class _Insert extends State<insertar> {
     }
   }
 
-  final formkey = new GlobalKey<FormState>();
   ImageGallery(BuildContext context) {
     ImagePicker.pickImage(source: ImageSource.gallery).then((imgFile) {
       String imgString = Convertir.base64String(imgFile.readAsBytesSync());
@@ -126,7 +125,10 @@ class _Insert extends State<insertar> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-              title: Text("elije", textAlign: TextAlign.center,),
+              title: Text(
+                "escoje para agregar la foto",
+                textAlign: TextAlign.center,
+              ),
               backgroundColor: Colors.black,
               content: SingleChildScrollView(
                 child: ListBody(children: <Widget>[
@@ -136,25 +138,31 @@ class _Insert extends State<insertar> {
                       ImageGallery(context);
                     },
                   ),
-                  Padding(padding: EdgeInsets.all(10.0),),
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                  ),
                   GestureDetector(
-                    child: Text("Camara",),
+                    child: Text(
+                      "Camara",
+                    ),
                     onTap: () {
-                      ImageCamera(context );
+                      ImageCamera(context);
                     },
                   )
                 ]),
               ));
         });
   }
+
+  final formkey = new GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       appBar: new AppBar(
         title: Text(
-          "INSERTAR",
-
+          "INSERT DATA SQFLite",
         ),
         centerTitle: true,
         backgroundColor: Colors.black,
@@ -173,24 +181,27 @@ class _Insert extends State<insertar> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
-                  verticalDirection: VerticalDirection.up,
+                  verticalDirection: VerticalDirection.down,
                   children: <Widget>[
                     TextFormField(
                       controller: controllerPhoto,
                       decoration: InputDecoration(
                           labelText: "Photo",
                           suffixIcon: RaisedButton(
-                            color: Colors.grey,
+                            color: Colors.black,
                             onPressed: () {
                               _selectphoto(context);
                             },
-                            child: Text("Select image", textAlign: TextAlign.center,),
+                            child: Text(
+                              "Select image",
+                              textAlign: TextAlign.center,
+                            ),
                           )),
                       validator: (val) => val.length == 0
                           ? 'Debes subir una imagen'
                           : controllerPhoto.text == "Campo lleno"
-                          ? null
-                          : "Solo imagenes",
+                              ? null
+                              : "Solo imagenes",
                     ),
                     SizedBox(
                       height: 30.0,
@@ -201,9 +212,9 @@ class _Insert extends State<insertar> {
                       decoration: InputDecoration(
                           labelText: 'Name',
                           contentPadding:
-                          EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                              EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                           icon: Icon(
-                            Icons.person,
+                            Icons.person_outline,
                             size: 35.0,
                           ),
                           border: OutlineInputBorder(
@@ -215,43 +226,41 @@ class _Insert extends State<insertar> {
                       height: 20.0,
                     ),
                     TextFormField(
-                      controller: controllerAPaterno,
+                      controller: controllerPaterno,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                           labelText: 'apellido paterno',
                           contentPadding:
                               EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                           icon: Icon(
-                            Icons.person_pin,
-                            color: Colors.cyan,
+                            Icons.person_outline,
                             size: 35.0,
                           ),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(32.0))),
                       validator: (val) =>
                           val.length == 0 ? 'Ingrese apellido' : null,
-                      onSaved: (val) => Apaterno = val.toUpperCase(),
+                      onSaved: (val) => paterno = val.toUpperCase(),
                     ),
                     SizedBox(
                       height: 20.0,
                     ),
                     TextFormField(
-                      controller: controllerAMaterno,
+                      controller: controllerMaterno,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                           labelText: 'apellido materno',
                           contentPadding:
                               EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                           icon: Icon(
-                            Icons.person_pin,
-                            color: Colors.cyan,
+                            Icons.person_outline,
                             size: 35.0,
                           ),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(32.0))),
                       validator: (val) =>
                           val.length == 0 ? 'Ingrese apellido' : null,
-                      onSaved: (val) => Amaterno = val.toUpperCase(),
+                      onSaved: (val) => materno = val.toUpperCase(),
                     ),
                     SizedBox(
                       height: 20.0,
@@ -264,8 +273,7 @@ class _Insert extends State<insertar> {
                           contentPadding:
                               EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                           icon: Icon(
-                            Icons.contact_mail,
-                            color: Colors.cyan,
+                            Icons.email,
                             size: 35.0,
                           ),
                           border: OutlineInputBorder(
@@ -273,9 +281,9 @@ class _Insert extends State<insertar> {
                       validator: (val) =>
                           !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
                                   .hasMatch(val)
-                              ? 'Enter mail'
+                              ? 'introducir mail'
                               : null,
-                      onSaved: (val) => email = val,
+                      onSaved: (val) => email = val.toUpperCase(),
                     ),
                     SizedBox(
                       height: 20.0,
@@ -284,19 +292,18 @@ class _Insert extends State<insertar> {
                       controller: controllerPhone,
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
-                          labelText: 'numero de telefono',
+                          labelText: 'telefono',
                           contentPadding:
                               EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                           icon: Icon(
-                            Icons.phone_android,
-                            color: Colors.cyan,
+                            Icons.phone,
                             size: 35.0,
                           ),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(32.0))),
-                      validator: (val) => val.length < 10
-                          ? ' los numero de telefono tienen 10 caracteres'
-                          : null,
+                      maxLength: 10,
+                      validator: (val) =>
+                          val.length < 10 ? 'numero de telefono' : null,
                       onSaved: (val) => phone = val,
                     ),
                     SizedBox(
@@ -311,11 +318,11 @@ class _Insert extends State<insertar> {
                               EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                           icon: Icon(
                             Icons.perm_identity,
-                            color: Colors.cyan,
                             size: 35.0,
                           ),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(32.0))),
+                      maxLength: 10,
                       validator: (val) =>
                           (val.length < 10) ? 'Matricula' : null,
                       onSaved: (val) => matricula = val,
@@ -329,27 +336,29 @@ class _Insert extends State<insertar> {
                         MaterialButton(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.cyan, width: 2.0)),
+                              side: BorderSide(
+                                  color: Colors.tealAccent, width: 2.0)),
                           onPressed: () async {
                             verificar();
                           },
                           child: Text(
-                            isUpdating ? 'ACTUALIZAR' : 'AÑADIR',
+                            isUpdating ? 'Update' : 'Add Data',
                             style: TextStyle(fontSize: 17.0),
                           ),
                         ),
                         MaterialButton(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.cyan, width: 2.0)),
+                              side: BorderSide(
+                                  color: Colors.tealAccent, width: 2.0)),
                           onPressed: () {
                             setState(() {
                               isUpdating = false;
                             });
                             cleanData();
                           },
-                          child: Text('CANCELAR',
-                              style: TextStyle(fontSize: 17.0)),
+                          child:
+                              Text('CANCEL', style: TextStyle(fontSize: 17.0)),
                         )
                       ],
                     )
@@ -358,11 +367,6 @@ class _Insert extends State<insertar> {
               ),
             ),
           )),
-
-
     );
   }
 }
-
-
-

@@ -1,5 +1,10 @@
+import 'package:appbasephoto/seleccionar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'actualizar.dart';
+import 'buscar.dart';
+import 'convertir.dart';
+import 'insertar.dart';
 import 'students.dart';
 import 'crud_operations.dart';
 import 'main.dart';
@@ -16,8 +21,8 @@ class _borrar extends State<borrar> {
   Future<List<Student>> Studentss;
   TextEditingController controllerMatricula = TextEditingController();
   String name;
-  String Apellidopaterno;
-  String Apellidomaterno;
+  String paterno;
+  String materno;
   String email;
   String phone;
   String matricula = null;
@@ -37,7 +42,7 @@ class _borrar extends State<borrar> {
 
   void refreshList() {
     setState(() {
-      Studentss = bdHelper.Students(matricula);
+      Studentss = bdHelper.getStudents(matricula);
     });
   }
 
@@ -46,9 +51,9 @@ class _borrar extends State<borrar> {
   }
 
   void verificar() async {
-    Student stu = Student(
-        null, name, Apellidopaterno, Apellidomaterno, phone, email, matricula,photo);
-    var col = await bdHelper.Matricula(matricula);
+    Student stu =
+        Student(null, name, paterno, materno, phone, email, matricula, photo);
+    var col = await bdHelper.getMatricula(matricula);
     print(col);
     if (col == 0) {
       showInSnackBar("Data not found!");
@@ -76,60 +81,70 @@ class _borrar extends State<borrar> {
           child: DataTable(
             columns: [
               DataColumn(
-                  label: Text("BORRAR",
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ))),
+                label: Text(
+                  "Eliminar",
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red[800],
+                  ),
+                ),
+              ),
               DataColumn(
                 label: Text("Matricula",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey)),
+                        color: Colors.brown)),
               ),
               DataColumn(
-                label: Text("Nombre",
+                label: Text("Name",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey)),
+                        color: Colors.brown)),
               ),
               DataColumn(
-                label: Text("Apellido Paterno",
+                label: Text("Paterno",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey)),
+                        color: Colors.brown)),
               ),
               DataColumn(
-                label: Text("Apellido Materno",
+                label: Text("Materno",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey)),
+                        color: Colors.brown)),
               ),
               DataColumn(
-                label: Text("numero de telefono",
+                label: Text("Phone",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey)),
+                        color: Colors.brown)),
               ),
               DataColumn(
                 label: Text("Email",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey)),
+                        color: Colors.brown)),
+              ),
+              DataColumn(
+                label: Text("Photo",
+                    style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.brown)),
               )
             ],
             rows: Studentss.map((student) => DataRow(cells: [
                   DataCell(IconButton(
                     icon: Icon(
                       Icons.delete,
-                      color: Colors.black,
+                      color: Colors.red,
                       size: 30.0,
                     ),
                     onPressed: () {
@@ -138,19 +153,22 @@ class _borrar extends State<borrar> {
                     },
                   )),
                   DataCell(Text(student.matricula.toString(),
-                      style: TextStyle(fontSize: 16.0, color: Colors.blueGrey))),
+                      style: TextStyle(fontSize: 16.0, color: Colors.cyan))),
                   DataCell(
                     Text(student.name.toString(),
-                        style: TextStyle(fontSize: 16.0, color: Colors.blueGrey)),
+                        style: TextStyle(fontSize: 16.0, color: Colors.cyan)),
                   ),
-                  DataCell(Text(student.Apaterno.toString(),
-                      style: TextStyle(fontSize: 16.0, color: Colors.blueGrey))),
-                  DataCell(Text(student.Amaterno.toString(),
-                      style: TextStyle(fontSize: 16.0, color: Colors.blueGrey))),
+                  DataCell(Text(student.paterno.toString(),
+                      style: TextStyle(fontSize: 16.0, color: Colors.cyan))),
+                  DataCell(Text(student.materno.toString(),
+                      style: TextStyle(fontSize: 16.0, color: Colors.cyan))),
                   DataCell(Text(student.phone.toString(),
-                      style: TextStyle(fontSize: 16.0, color: Colors.blueGrey))),
+                      style: TextStyle(fontSize: 16.0, color: Colors.cyan))),
                   DataCell(Text(student.email.toString(),
-                      style: TextStyle(fontSize: 16.0, color: Colors.blueGrey))),
+                      style: TextStyle(fontSize: 16.0, color: Colors.cyan))),
+                  DataCell(
+                    Convertir.imageFromBase64sString(student.photo),
+                  ),
                 ])).toList(),
           ),
         ));
@@ -182,7 +200,7 @@ class _borrar extends State<borrar> {
       key: _scaffoldKey,
       appBar: new AppBar(
         title: Text(
-          "BORRAR",
+          "DELETE DATA SQFLite",
         ),
         centerTitle: true,
         backgroundColor: Colors.black,
@@ -211,12 +229,12 @@ class _borrar extends State<borrar> {
                           contentPadding:
                               EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                           icon: Icon(
-                            Icons.perm_identity,
+                            Icons.card_membership,
                             size: 35.0,
                           ),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(32.0))),
-
+                      maxLength: 10,
                       validator: (val) => (val.length < 10 && val.length > 1)
                           ? 'Matricula'
                           : null,
@@ -232,7 +250,7 @@ class _borrar extends State<borrar> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
                               side: BorderSide(
-                                  color: Colors.black, width: 2.0)),
+                                  color: Colors.tealAccent, width: 2.0)),
                           onPressed: () {
                             matricula = controllerMatricula.text;
                             if (matricula == "") {
@@ -246,36 +264,30 @@ class _borrar extends State<borrar> {
                             }
                           },
                           child: Text(
-                            isUpdating ? 'ACTUALIZAR' : 'BUSCAR',
+                            isUpdating ? 'Update' : 'Search Data',
                             style: TextStyle(fontSize: 17.0),
                           ),
                         ),
-
+                        MaterialButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(
+                                  color: Colors.tealAccent, width: 2.0)),
+                          onPressed: () {
+                            setState(() {
+                              isUpdating = false;
+                            });
+                            cleanData();
+                            matricula = null;
+                            refreshList();
+                          },
+                          child:
+                              Text('CANCEL', style: TextStyle(fontSize: 17.0)),
+                        )
                       ],
                     ),
-                    MaterialButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(
-                              color: Colors.black, width: 2.0)),
-                      onPressed: () {
-                        setState(() {
-                          isUpdating = false;
-                        });
-                        cleanData();
-                        matricula = null;
-                        refreshList();
-                      },
-                      child:
-                      Text('CANCEL', style: TextStyle(fontSize: 17.0)),
-                    ),
-                    Row(children: <Widget>[list(
-                      
-                    )])
-                    
-                    
+                    Row(children: <Widget>[list()])
                   ],
-                  
                 ),
               ),
             ),
