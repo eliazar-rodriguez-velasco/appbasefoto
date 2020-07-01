@@ -1,9 +1,7 @@
 import 'students.dart';
 import 'package:flutter/material.dart';
 import 'convertir.dart';
-import 'package:image_picker/image_picker.dart';
-import 'students.dart';
-import 'crud_operations.dart';
+
 
 class DetailPage extends StatelessWidget {
   final Student student;
@@ -57,7 +55,7 @@ class DetailPage extends StatelessWidget {
                         SizedBox(
                           height: 30.0,
                         ),
-                        //FOTOGRAFIA
+                        //FOTO
                         CircleAvatar(
                           minRadius: 100.0,
                           maxRadius: 100.0,
@@ -134,7 +132,7 @@ class DetailPage extends StatelessWidget {
                           padding: EdgeInsets.all(10.0),
                         ),
                         Container(
-                          width: MediaQuery.of(context).size.width - 90,
+                          width: MediaQuery.of(context).size.width ,
                           child: RaisedButton.icon(
                             onPressed: () {
                               print('Button Clicked.');

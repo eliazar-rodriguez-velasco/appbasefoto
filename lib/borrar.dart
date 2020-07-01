@@ -1,13 +1,10 @@
-import 'package:appbasephoto/seleccionar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'actualizar.dart';
-import 'buscar.dart';
+
 import 'convertir.dart';
-import 'insertar.dart';
 import 'students.dart';
 import 'crud_operations.dart';
-import 'main.dart';
+
 
 class borrar extends StatefulWidget {
   @override

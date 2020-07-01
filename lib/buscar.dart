@@ -1,8 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'borrar.dart';
-import 'insertar.dart';
-import 'seleccionar.dart';
-import 'actualizar.dart';
 import 'crud_operations.dart';
 import 'details.dart';
 import 'students.dart';

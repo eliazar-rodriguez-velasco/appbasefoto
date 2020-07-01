@@ -1,16 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'borrar.dart';
-import 'buscar.dart';
+
 import 'convertir.dart';
-import 'insertar.dart';
-import 'seleccionar.dart';
-import 'actualizar.dart';
 import 'students.dart';
 import 'crud_operations.dart';
-import 'main.dart';
-import 'students.dart';
+
 
 class actualizar extends StatefulWidget {
   @override
@@ -136,21 +131,21 @@ class _actualizar extends State<actualizar> {
     });
   }
 
-  // seleccionar imagen ya se camara o galeria
+  // imagen camara o galeria
   Future<void> _selectfoto(BuildContext context) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
               title: Text(
-                "Make a choise!",
+                "elija para su nueva foto",
                 textAlign: TextAlign.center,
               ),
-              backgroundColor: Colors.deepPurpleAccent[200],
+              backgroundColor: Colors.black,
               content: SingleChildScrollView(
                 child: ListBody(children: <Widget>[
                   GestureDetector(
-                    child: Text("Gallery"),
+                    child: Text("Galeria"),
                     onTap: () {
                       pickImagefromGallery(context);
                     },
@@ -160,7 +155,7 @@ class _actualizar extends State<actualizar> {
                   ),
                   GestureDetector(
                     child: Text(
-                      "Camera",
+                      "Camara",
                     ),
                     onTap: () {
                       pickImagefromCamera(context);
@@ -186,10 +181,10 @@ class _actualizar extends State<actualizar> {
               controller: change ? controllerValue : controllerPhoto,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                  labelText: 'Update',
+                  labelText: 'actualizar',
                   contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                   icon: Icon(
-                    Icons.content_paste,
+                    Icons.card_membership,
                     size: 35.0,
                   ),
                   border: OutlineInputBorder(
@@ -198,7 +193,7 @@ class _actualizar extends State<actualizar> {
                   ? val.length == 0
                   ? 'Enter Data'
                   : controllerPhoto.text != "Campo lleno"
-                  ? "Solo se puede imagenes"
+                  ? "solo se puede con imagebes"
                   : null
                   : val.length == 0 ? 'Enter Data' : null,
               onSaved: (val) =>
@@ -213,7 +208,7 @@ class _actualizar extends State<actualizar> {
                 MaterialButton(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(color: Colors.deepPurple),
+                    side: BorderSide(color: Colors.black),
                   ),
                   onPressed: updateData,
                   //child: Text(isUpdating ? 'Update ' : 'Add Data'),
@@ -222,7 +217,7 @@ class _actualizar extends State<actualizar> {
                 MaterialButton(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(color: Colors.deepPurple),
+                    side: BorderSide(color: Colors.black),
                   ),
                   onPressed: () {
                     setState(() {
@@ -257,7 +252,7 @@ class _actualizar extends State<actualizar> {
                   style: TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.bold,
-                    color: Colors.yellowAccent,
+                    color: Colors.brown,
                   ),
                 ),
               ),
@@ -266,49 +261,49 @@ class _actualizar extends State<actualizar> {
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.yellowAccent)),
+                        color: Colors.brown)),
               ),
               DataColumn(
                 label: Text("Name",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.yellowAccent)),
+                        color: Colors.brown)),
               ),
               DataColumn(
                 label: Text("Paterno",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.yellowAccent)),
+                        color: Colors.brown)),
               ),
               DataColumn(
                 label: Text("Materno",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.yellowAccent)),
+                        color: Colors.brown)),
               ),
               DataColumn(
                 label: Text("Phone",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.yellowAccent)),
+                        color: Colors.brown)),
               ),
               DataColumn(
                 label: Text("Email",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.yellowAccent)),
+                        color: Colors.brown)),
               ),
               DataColumn(
                 label: Text("Photo",
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.yellowAccent)),
+                        color: Colors.brown)),
               )
             ],
             rows: Studentss.map((student) => DataRow(cells: [
@@ -316,12 +311,12 @@ class _actualizar extends State<actualizar> {
                   style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
-                      color: Colors.yellow))),
+                      color: Colors.brown))),
               DataCell(
                   Text(student.matricula.toString(),
                       style: TextStyle(
                           fontSize: 16.0,
-                          color: Colors.deepOrange)), onTap: () {
+                          color: Colors.cyan)), onTap: () {
                 setState(() {
                   isUpdating = true;
                   change = true;
@@ -340,7 +335,7 @@ class _actualizar extends State<actualizar> {
               DataCell(
                   Text(student.name.toString(),
                       style: TextStyle(
-                          fontSize: 16.0, color: Colors.deepOrange)), onTap: () {
+                          fontSize: 16.0, color: Colors.cyan)), onTap: () {
                 setState(() {
                   isUpdating = true;
                   change = true;
@@ -359,7 +354,7 @@ class _actualizar extends State<actualizar> {
               ),
               DataCell(Text(student.paterno.toString(),
                   style:
-                  TextStyle(fontSize: 16.0, color: Colors.deepOrange)), onTap: () {
+                  TextStyle(fontSize: 16.0, color: Colors.cyan)), onTap: () {
                 setState(() {
                   isUpdating = true;
                   change = true;
@@ -377,7 +372,7 @@ class _actualizar extends State<actualizar> {
               }),
               DataCell(Text(student.materno.toString(),
                   style:
-                  TextStyle(fontSize: 16.0, color: Colors.deepOrange)), onTap: () {
+                  TextStyle(fontSize: 16.0, color: Colors.cyan)), onTap: () {
                 setState(() {
                   isUpdating = true;
                   change = true;
@@ -395,7 +390,7 @@ class _actualizar extends State<actualizar> {
               }),
               DataCell(Text(student.phone.toString(),
                   style:
-                  TextStyle(fontSize: 16.0, color: Colors.deepOrange)), onTap: () {
+                  TextStyle(fontSize: 16.0, color: Colors.cyan)), onTap: () {
                 setState(() {
                   isUpdating = true;
                   change = true;
@@ -413,7 +408,8 @@ class _actualizar extends State<actualizar> {
               }),
               DataCell(Text(student.email.toString(),
                   style:
-                  TextStyle(fontSize: 16.0, color: Colors.deepOrange)),  onTap: () {
+                  TextStyle(fontSize: 16.0, color: Colors.cyan
+                  )),  onTap: () {
                 setState(() {
                   isUpdating = true;
                   change = true;
@@ -478,8 +474,8 @@ class _actualizar extends State<actualizar> {
     return new Scaffold(
       resizeToAvoidBottomInset: false, //new line
       appBar: new AppBar(
-        title: Text('Actualizar Datos'),
-        backgroundColor: Colors.deepPurple,
+        title: Text('Actualizar'),
+        backgroundColor: Colors.black,
         centerTitle: true,
       ),
       body: new Container(
